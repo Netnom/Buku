@@ -14,6 +14,7 @@ _buku () {
         -a --add
         --ai
         -c --comment
+        --cached
         --colors
         -d --delete
         --deep
@@ -26,6 +27,7 @@ _buku () {
         -j --json
         -k --unlock
         -l --lock
+        -n --count
         --nc
         --np
         -o --open
@@ -47,16 +49,19 @@ _buku () {
         -V
         -v --version
         -w --write
+        -x --exclude
         -z --debug
     )
     opts_with_arg=(
         -a --add
+        --cached
         --colors
         -e --export
         --expand
         -f --format
         -i --import
         --immutable
+        -n --count
         -r --sreg
         --replace
         -s --sany
@@ -64,6 +69,7 @@ _buku () {
         --shorten
         --threads
         --url
+        -x --exclude
     )
 
     # Do not complete non option names

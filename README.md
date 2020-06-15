@@ -1,44 +1,37 @@
-<h1 align="center">Buku</h1>
+<h1 align="center">buku</h1>
 
 <p align="center">
-<a href="https://github.com/jarun/Buku/releases/latest"><img src="https://img.shields.io/github/release/jarun/buku.svg?maxAge=600" alt="Latest release" /></a>
-<a href="https://aur.archlinux.org/packages/buku"><img src="https://img.shields.io/aur/version/buku.svg?maxAge=600" alt="AUR" /></a>
-<a href="http://braumeister.org/formula/buku"><img src="https://img.shields.io/homebrew/v/buku.svg?maxAge=600" alt="Homebrew" /></a>
-<a href="https://pypi.python.org/pypi/buku"><img src="https://img.shields.io/pypi/v/buku.svg?maxAge=600" alt="PyPI" /></a>
-<a href="https://packages.debian.org/search?keywords=buku&searchon=names&exact=1"><img src="https://img.shields.io/badge/debian-9+-blue.svg?maxAge=2592000" alt="Debian Strech+" /></a>
-<a href="https://packages.ubuntu.com/search?keywords=buku&searchon=names&exact=1"><img src="https://img.shields.io/badge/ubuntu-17.04+-blue.svg?maxAge=2592000" alt="Ubuntu Zesty+" /></a>
-<a href="https://launchpad.net/~twodopeshaggy/+archive/ubuntu/jarun/"><img src="https://img.shields.io/badge/ubuntu-PPA-blue.svg?maxAge=2592000" alt="Ubuntu PPA" /></a>
-</p>
-
-<p align="center">
-<a href="https://github.com/jarun/buku/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-yellow.svg?maxAge=2592000" alt="License" /></a>
+<a href="https://github.com/jarun/buku/releases/latest"><img src="https://img.shields.io/github/release/jarun/buku.svg?maxAge=600" alt="Latest release" /></a>
+<a href="https://repology.org/project/buku/versions"><img src="https://repology.org/badge/tiny-repos/buku.svg" alt="Availability"></a>
+<a href="https://pypi.org/project/buku/"><img src="https://img.shields.io/pypi/v/buku.svg?maxAge=600" alt="PyPI" /></a>
+<a href="https://circleci.com/gh/jarun/workflows/buku"><img src="https://img.shields.io/circleci/project/github/jarun/buku.svg" alt="Build Status" /></a>
 <a href="http://buku.readthedocs.io/en/latest/?badge=latest"><img src="https://readthedocs.org/projects/buku/badge/?version=latest" alt="Docs Status" /></a>
-<a href="https://travis-ci.org/jarun/Buku"><img src="https://travis-ci.org/jarun/Buku.svg?branch=master" alt="Build Status" /></a>
+<a href="https://en.wikipedia.org/wiki/Privacy-invasive_software"><img src="https://img.shields.io/badge/privacy-✓-crimson" alt="Privacy Awareness" /></a>
+<a href="https://github.com/jarun/buku/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-GPLv3-yellowgreen.svg?maxAge=2592000" alt="License" /></a>
 </p>
 
 <p align="center">
-<a href="https://asciinema.org/a/137065"><img src="https://s26.postimg.org/o6lka0dw9/buku_demo.png" alt="Buku in action!" width="734"/></a>
+<a href="https://asciinema.org/a/137065"><img src="https://asciinema.org/a/137065.png" alt="buku in action!" width="734"/></a>
 </p>
 
-<p align="center"><i>Buku in action!</i></p>
+<p align="center"><i>buku in action!</i></p>
 
 ### Introduction
 
-`buku` is a powerful bookmark manager written in Python3 and SQLite3. When I started writing it, I couldn't find a flexible cmdline solution with a private, portable, merge-able database along with browser integration. Hence, `Buku` (after my son's nickname, meaning *close to the heart* in my language).
+`buku` is a powerful bookmark manager written in Python3 and SQLite3. When I started writing it, I couldn't find a flexible command-line solution with a private, portable, merge-able database along with seamless GUI integration. Hence, `buku` (after my son's nickname, meaning *close to the heart* in my language).
 
-`buku` fetches the title of a bookmarked web page and stores it along with any additional comments and tags. You can use your favourite editor to compose and update bookmarks. With multiple search options, including regex and a deep scan mode (particularly for URLs), it can find any bookmark instantly. Multiple search results can be opened in the browser at once.
+[bukuserver](https://github.com/jarun/buku/tree/master/bukuserver) exposes a browsable front-end on a local web host server.
 
-For GUI integration (or to sync bookmarks with your favourite bookmark management service), refer to the wiki page on [System integration](https://github.com/jarun/Buku/wiki/System-integration). If you prefer the terminal, thanks to the [shell completion](#shell-completion) scripts, you don't need to memorize any of the options. There's an Easter egg to revisit random forgotten bookmarks too.
+`buku` can auto-import bookmarks from your browser(s) or fetch the title and description of a bookmarked url from the web. You can use your favourite editor to compose and update bookmarks. With multiple search options, including regex and a deep scan mode (particularly for URLs), it can find any bookmark instantly. `buku` can look up the latest snapshot of a broken link on the Wayback Machine. There's an Easter egg to revisit random forgotten bookmarks too! *Buku* is too busy to track you: no hidden history, obsolete records, usage analytics or homing.
 
-We have one of the best documentation around. You can start with the [Examples](#examples). *Buku* is too busy to track you - no hidden history, obsolete records, usage analytics or homing. To learn more on how it works or to contribute to the project, please refer to the wiki page on [Operational notes](https://github.com/jarun/Buku/wiki/Operational-notes).
+To get started right away, jump to the [Quickstart](#quickstart) section. We have one of the best documentation around. You'll find handy examples in the man page too. For more details, please refer to the wiki page on [operational notes](https://github.com/jarun/buku/wiki/Operational-notes).
 
 There are several [projects based on `buku`](#related-projects), including a browser plug-in.
 
-PRs are welcome. Please visit [#174](https://github.com/jarun/Buku/issues/174) for a list of TODOs. Visit the [wiki](https://github.com/jarun/Buku/wiki) for guidelines.
+*Love smart and efficient utilities? Explore [my repositories](https://github.com/jarun?tab=repositories). Buy me a cup of coffee if they help you.*
 
 <p align="center">
-<a href="https://saythanks.io/to/jarun"><img src="https://img.shields.io/badge/say-thanks!-ff69b4.svg" /></a>
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RMLTQ76JSXJ4Q"><img src="https://img.shields.io/badge/Donate-$5-FC746D.svg" alt="Donate via PayPal!" /></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RMLTQ76JSXJ4Q"><img src="https://img.shields.io/badge/PayPal-donate-1eb0fc.svg" alt="Donate via PayPal!" /></a>
 </p>
 
 ### Table of Contents
@@ -52,31 +45,34 @@ PRs are welcome. Please visit [#174](https://github.com/jarun/Buku/issues/174) f
   - [Running standalone](#running-standalone)
 - [Shell completion](#shell-completion)
 - [Usage](#usage)
-  - [Cmdline options](#cmdline-options)
+  - [Command-line options](#command-line-options)
   - [Colors](#colors)
+- [Quickstart](#quickstart)
 - [Examples](#examples)
+- [Automation](#automation)
 - [Troubleshooting](#troubleshooting)
   - [Editor integration](#editor-integration)
 - [Collaborators](#collaborators)
+- [Contributions](#contributions)
 - [Related projects](#related-projects)
 - [In the Press](#in-the-press)
 
 ### Features
 
-- Lightweight, clean interface, custom colors
-- Text editor integration
-- Fetch, edit page title; add tags and notes
-- Powerful search modes (regex, substring...)
-- Continuous search with on the fly mode switch
+- Store bookmarks with auto-fetched title, tags and description
+- Auto-import from Firefox, Google Chrome and Chromium
 - Open bookmarks and search results in browser
-- Manual encryption support
-- Auto-import Firefox and Google Chrome bookmarks
-- Import/export bookmarks from/to HTML or Markdown
-- Shorten and expand URLs
-- Smart tag management using redirection (>>, >, <<)
+- Shorten, expand URLs, browse cached page from Wayback Machine
+- Text editor integration
+- Lightweight, clean interface, custom colors
+- Powerful search options (regex, substring...)
+- Continuous search with on the fly mode switch
 - Portable, merge-able database to sync between systems
-- Multithreaded full DB refresh
+- Import/export bookmarks from/to HTML, Markdown or Orgfile
+- Smart tag management using redirection (>>, >, <<)
+- Multithreaded full DB refresh, manual encryption support
 - Shell completion scripts, man page with handy examples
+- Privacy-aware (no unconfirmed user data collection)
 
 ### Installation
 
@@ -84,39 +80,49 @@ PRs are welcome. Please visit [#174](https://github.com/jarun/Buku/issues/174) f
 
 | Feature | Dependency |
 | --- | --- |
-| Scripting language | Python 3.3+ |
-| HTTP(S) | urllib3 |
+| Scripting language | Python 3.5+ |
+| HTTPS | certifi, urllib3 |
 | Encryption | cryptography |
-| Import browser exported html | beautifulsoup4 |
-| Shorten URL, check latest release | requests |
+| HTML | beautifulsoup4, html5lib |
 
-To install package dependencies using pip3, run:
-
-    $ sudo pip3 install urllib3 cryptography beautifulsoup4 requests
-or on Ubuntu:
-
-    $ sudo apt-get install python3-urllib3 python3-cryptography python3-bs4 python3-requests
+To copy url to clipboard at the prompt `buku` uses `xsel` (or `xclip`) on Linux, `pbcopy` (default installed) on OS X, `clip` (default installed) on Windows, `termux-clipboard` on Termux (terminal emulation for Android). If X11 is missing, GNU Screen or tmux copy-paste buffers are recognized.
 
 #### From a package manager
 
-- [AUR](https://aur.archlinux.org/packages/buku/)
-- [Debian](https://packages.debian.org/search?keywords=buku&searchon=names&exact=1)
-- [Homebrew](http://braumeister.org/formula/buku)
-- [NixOS](https://github.com/NixOS/nixpkgs/tree/master/pkgs/applications/misc/buku) (`sudo nix-env -i buku`)
-- [PyPi](https://pypi.python.org/pypi/buku/) (`sudo pip3 install buku`)
-- [Ubuntu](http://packages.ubuntu.com/search?keywords=buku&searchon=names&exact=1)
-- [Ubuntu PPA](https://launchpad.net/~twodopeshaggy/+archive/ubuntu/jarun/)
-- [Void Linux](https://github.com/voidlinux/void-packages/tree/master/srcpkgs/buku) (`sudo xbps-install -S buku`)
+To install buku with all its dependencies from PyPI, run:
+
+    # pip3 install buku
+
+You can also install `buku` from your package manager. If the version available is dated try an alternative installation method.
+
+<details><summary>Packaging status (expand)</summary>
+<p>
+<br>
+<a href="https://repology.org/project/buku/versions"><img src="https://repology.org/badge/vertical-allrepos/buku.svg" alt="Packaging status"></a>
+</p>
+Unlisted packagers:
+<p>
+<br>
+● <a href="https://pypi.org/project/buku/">PyPI</a> (<code>pip3 install buku</code>)<br>
+● Termux (<code>pip3 install buku</code>)<br>
+</p>
+</details>
 
 #### Release packages
 
-Packages for Arch Linux, CentOS, Fedora and Ubuntu are available with the [latest stable release](https://github.com/jarun/Buku/releases/latest).
+Auto-generated packages (with only the cli component) for Arch Linux, CentOS, Debian, Fedora, openSUSE Leap and Ubuntu are available with the [latest stable release](https://github.com/jarun/buku/releases/latest).
+
+NOTE: CentOS may not have the python3-beautifulsoup4 package in the repos. Install it using pip3.
 
 #### From source
 
-If you have git installed, clone this repository. Otherwise download the [latest stable release](https://github.com/jarun/Buku/releases/latest) or [development version](https://github.com/jarun/Buku/archive/master.zip) (*risky*).
+If you have git installed, clone this repository. Otherwise download the [latest stable release](https://github.com/jarun/buku/releases/latest) or [development version](https://github.com/jarun/buku/archive/master.zip) (*risky*).
 
-Install to default location (`/usr/local`):
+Install the dependencies. For example, on Ubuntu:
+
+    $ apt-get install ca-certificates python3-urllib3 python3-cryptography python3-bs4
+
+Install the cli component to default location (`/usr/local`):
 
     $ sudo make install
 
@@ -130,21 +136,21 @@ To remove, run:
 
 `buku` is a standalone utility. From the containing directory, run:
 
-    $ chmod +x buku.py
-    $ ./buku.py
+    $ chmod +x buku
+    $ ./buku
 
 ### Shell completion
 
-Shell completion scripts for Bash, Fish and Zsh can be found in respective subdirectories of [auto-completion/](https://github.com/jarun/Buku/blob/master/auto-completion). Please refer to your shell's manual for installation instructions.
+Shell completion scripts for Bash, Fish and Zsh can be found in respective subdirectories of [auto-completion/](https://github.com/jarun/buku/blob/master/auto-completion). Please refer to your shell's manual for installation instructions.
 
 ### Usage
 
-#### Cmdline options
+#### Command-line options
 
 ```
 usage: buku [OPTIONS] [KEYWORD [KEYWORD ...]]
 
-Powerful command-line bookmark manager.
+Bookmark manager like a text-based mini-web.
 
 POSITIONAL ARGUMENTS:
       KEYWORD              search keywords
@@ -154,10 +160,10 @@ GENERAL OPTIONS:
                            bookmark URL with comma-separated tags
       -u, --update [...]   update fields of an existing bookmark
                            accepts indices and ranges
-                           refresh the title, if no edit options
+                           refresh title and desc if no edit options
                            if no arguments:
                            - update results when used with search
-                           - otherwise refresh all titles
+                           - otherwise refresh all titles and desc
       -w, --write [editor|index]
                            open editor to edit a fresh bookmark
                            edit last bookmark, if index=-1
@@ -179,49 +185,55 @@ EDIT OPTIONS:
                            -a: do not set title, -u: clear title
       -c, --comment [...]  notes or description of the bookmark
                            clears description, if no arguments
-      --immutable N        disable title fetch from web on update
+      --immutable N        disable web-fetch during auto-refresh
                            N=0: mutable (default), N=1: immutable
 
 SEARCH OPTIONS:
-      -s, --sany           find records with ANY matching keyword
+      -s, --sany [...]     find records with ANY matching keyword
                            this is the default search option
-      -S, --sall           find records matching ALL the keywords
+      -S, --sall [...]     find records matching ALL the keywords
                            special keywords -
                            "blank": entries with empty title/tag
                            "immutable": entries with locked title
       --deep               match substrings ('pen' matches 'opens')
-      -r, --sreg           run a regex search
+      -r, --sreg expr      run a regex search
       -t, --stag [tag [,|+] ...] [- tag, ...]
                            search bookmarks by tags
                            use ',' to find entries matching ANY tag
                            use '+' to find entries matching ALL tags
                            excludes entries with tags after ' - '
                            list all tags, if no search keywords
+      -x, --exclude [...]  omit records matching specified keywords
 
 ENCRYPTION OPTIONS:
       -l, --lock [N]       encrypt DB in N (default 8) # iterations
       -k, --unlock [N]     decrypt DB in N (default 8) # iterations
 
 POWER TOYS:
-      --ai                 auto-import from Firefox and Chrome
-      -e, --export file    export bookmarks in Firefox format html
-                           export markdown, if file ends with '.md'
-                           format: [title](url), 1 entry per line
+      --ai                 auto-import from Firefox/Chrome/Chromium
+      -e, --export file    export bookmarks to Firefox format HTML
+                           export Markdown, if file ends with '.md'
+                           format: [title](url) <!-- TAGS -->
+                           export Orgfile, if file ends with '.org'
+                           format: *[[url][title]] :tags:
                            export buku DB, if file ends with '.db'
-                           use --tag to export specific tags
-      -i, --import file    import Firefox or Chrome bookmarks html
-                           import markdown, if file ends with '.md'
-                           import buku DB, if file ends with '.db'
+                           combines with search results, if opted
+      -i, --import file    import bookmarks based on file extension
+                           supports 'html', 'json', 'md', 'org', 'db'
       -p, --print [...]    show record details by indices, ranges
                            print all bookmarks, if no arguments
                            -n shows the last n results (like tail)
-      -f, --format N       limit fields in -p or Json search output
-                           N=1: URL, N=2: URL and tag, N=3: title,
-                           N=4: URL, title and tag. To omit DB index,
-                           use N0, e.g, 10, 20, 30, 40.
-      -j, --json           Json formatted output for -p and search
+      -f, --format N       limit fields in -p or JSON search output
+                           N=1: URL; N=2: URL, tag; N=3: title;
+                           N=4: URL, title, tag; N=5: title, tag;
+                           N0 (10, 20, 30, 40, 50) omits DB index
+      -j, --json           JSON formatted output for -p and search
+      -j, --json [file]    JSON formatted output for -p and search.
+                           prints to stdout if no arguments provided.
+                           otherwise writes to given file
       --colors COLORS      set output colors in five-letter string
       --nc                 disable color output
+      -n, --count N        show N results per page (default 10)
       --np                 do not show the prompt, run and exit
       -o, --open [...]     browse bookmarks by indices and ranges
                            open a random bookmark, if no arguments
@@ -230,6 +242,7 @@ POWER TOYS:
                            delete old tag, if new tag not specified
       --shorten index|URL  fetch shortened url from tny.im service
       --expand index|URL   expand a tny.im shortened url
+      --cached index|URL   browse a cached page from Wayback Machine
       --suggest            show similar tags when adding bookmarks
       --tacit              reduce verbosity
       --threads N          max network connections in full refresh
@@ -244,25 +257,49 @@ SYMBOLS:
 
 PROMPT KEYS:
     1-N                    browse search result indices and/or ranges
+    O [id|range [...]]     open search results/indices in GUI browser
+                           toggle try GUI browser if no arguments
     a                      open all results in browser
     s keyword [...]        search for records with ANY keyword
     S keyword [...]        search for records with ALL keywords
     d                      match substrings ('pen' matches 'opened')
     r expression           run a regex search
-    t [...]                search bookmarks by tags or show taglist
-                           list index after a tag listing shows records with the tag
+    t [tag, ...]           search by tags; show taglist, if no args
+    g taglist id|range [...] [>>|>|<<] [record id|range ...]
+                           append, set, remove (all or specific) tags
+                           search by taglist id(s) if records are omitted
+    n                      show next page of search results
     o id|range [...]       browse bookmarks by indices and/or ranges
     p id|range [...]       print bookmarks by indices and/or ranges
-    g [taglist id|range ...] [>>|>|<<] record id|range [...]
-                           append, set, remove (all or specific) tags
     w [editor|id]          edit and add or update a bookmark
+    c id                   copy url at search result index to clipboard
     ?                      show this help
     q, ^D, double Enter    exit buku
 ```
 
 #### Colors
 
-`buku` supports custom colors. Visit the wiki page on how to [customize colors](https://github.com/jarun/Buku/wiki/Customize-colors) for more details.
+`buku` supports custom colors. Visit the wiki page on how to [customize colors](https://github.com/jarun/buku/wiki/Customize-colors) for more details.
+
+### Quickstart
+
+1. Export `VISUAL` or `EDITOR` to point to your favourite editor. Note that `VISUAL` takes precedence over `EDITOR`.
+2. Create a sweeter shortcut with some convenience.
+
+       alias b='buku --suggest'
+3. Auto-import bookmarks from your browser(s). Please quit the relevant browsers beforehand to ensure the databases are not locked.
+
+       b --ai
+4. Manually add a bookmark (for hands-on).
+
+       b -w
+5. List your bookmarks with DB index.
+
+       b -p
+6. For GUI and browser integration (or to sync bookmarks with your favourite bookmark management service) refer to the wiki page on [System integration](https://github.com/jarun/buku/wiki/System-integration).
+7. Handy (bash/zsh) command to fuzzy search all URLs and open the selected one in Firefox:
+
+       firefox $(buku -p -f 10 | fzy)
 
 ### Examples
 
@@ -304,16 +341,18 @@ PROMPT KEYS:
 
        $ buku -u 15012014 -c this is a new comment
     Applies to --url, --title and --tag too.
-9. **Export** bookmarks tagged `tag 1` or `tag 2` to HTML and markdown:
+9. **Export** bookmarks tagged `tag 1` or `tag 2` to HTML, Markdown, Orgfile or a new database:
 
-       $ buku -e bookmarks.html --tag tag 1, tag 2
-       $ buku -e bookmarks.md --tag tag 1, tag 2
-       $ buku -e bookmarks.db --tag tag 1, tag 2
-    All bookmarks are exported if --tag is not specified.
-10. **Import** bookmarks from HTML and markdown:
+       $ buku -e bookmarks.html --stag tag 1, tag 2
+       $ buku -e bookmarks.md --stag tag 1, tag 2
+       $ buku -e bookmarks.org --stag tag 1, tag 2
+       $ buku -e bookmarks.db --stag tag 1, tag 2
+    All bookmarks are exported if search is not opted.
+10. **Import** bookmarks from HTML, Markdown or Orgfile:
 
         $ buku -i bookmarks.html
         $ buku -i bookmarks.md
+        $ buku -i bookmarks.org
         $ buku -i bookmarks.db
 11. **Delete only comment** for bookmark at 15012014:
 
@@ -323,7 +362,7 @@ PROMPT KEYS:
 
         $ buku -u
         $ buku -u --tacit (show only failures and exceptions)
-    This operation does not modify the indexes, URLs, tags or comments. Only title is refreshed if fetched title is non-empty.
+    This operation can update the title or description fields of non-immutable bookmarks by parsing the fetched page. Fields are updated only if the fetched fields are non-empty. Tags remain untouched.
 13. **Delete** bookmark at index 15012014:
 
         $ buku -d 15012014
@@ -352,9 +391,9 @@ PROMPT KEYS:
 20. **Search** for bookmarks matching **ALL** of the tags `kernel`, `debugging`, `general kernel concepts`:
 
         $ buku --stag kernel + debugging + general kernel concepts
-21. **Search** for bookmarks matching both the tags `kernel` and `debugging`, but **excluding** bookmarks matching the tag `general kernel concepts`:
+21. **Search** for bookmarks matching any of the keywords `hello` or `world`, excluding the keywords `real` and `life`, matching both the tags `kernel` and `debugging`, but **excluding** the tags `general kernel concepts` and `books`:
 
-        $ buku --stag kernel + debugging - general kernel concepts
+        $ buku hello world --exclude real life --stag 'kernel + debugging - general kernel concepts, books'
 22. List **all unique tags** alphabetically:
 
         $ buku --stag
@@ -420,11 +459,15 @@ PROMPT KEYS:
         $ buku -h
         $ man buku
 
+### Automation
+
+Interactive workflows can be automated using expect. Issue [#368](https://github.com/jarun/buku/issues/368) has a working example on automating auto-import.
+
 ### Troubleshooting
 
 #### Editor integration
 
-You may encounter issues with GUI editors which maintain only one instance by default and return immediately from other instances. Use the appropriate editor option to block the caller when a new document is opened. See issue [#210](https://github.com/jarun/Buku/issues/210) for gedit.
+You may encounter issues with GUI editors which maintain only one instance by default and return immediately from other instances. Use the appropriate editor option to block the caller when a new document is opened. See issue [#210](https://github.com/jarun/buku/issues/210) for gedit.
 
 ### Collaborators
 
@@ -432,26 +475,35 @@ You may encounter issues with GUI editors which maintain only one instance by de
 - [Rachmadani Haryono](https://github.com/rachmadaniHaryono)
 - [Johnathan Jenkins](https://github.com/shaggytwodope)
 - [SZ Lin](https://github.com/szlin)
-- [Alex Gontar](https://github.com/mosegontar)
 
-Copyright © 2015-2017 [Arun Prakash Jana](mailto:engineerarun@gmail.com)
+Copyright © 2015-2020 [Arun Prakash Jana](mailto:engineerarun@gmail.com)
 <br>
-<p><a href="https://gitter.im/jarun/Buku"><img src="https://img.shields.io/gitter/room/jarun/buku.svg?maxAge=2592000" alt="gitter chat" /></a></p>
+<p><a href="https://gitter.im/jarun/buku"><img src="https://img.shields.io/gitter/room/jarun/buku.svg?maxAge=2592000" alt="gitter chat" /></a></p>
+
+### Contributions
+
+Missing a feature? There's a rolling [ToDo List](https://github.com/jarun/buku/issues/343) with identified tasks. Contributions are welcome! Please follow the [PR guidelines](https://github.com/jarun/buku/wiki/PR-guidelines).
 
 ### Related projects
 
 - [bukubrow](https://github.com/SamHH/bukubrow), WebExtension for browser integration
-- [oil](https://github.com/AndreiUlmeyda/oil), search-as-you-type cli frontend
-- [buku_run](https://github.com/carnager/buku_run), rofi frontend
+- [oil](https://github.com/AndreiUlmeyda/oil), search-as-you-type cli front-end
+- [buku_run](https://github.com/carnager/buku_run), rofi front-end
+- [pinku](https://github.com/mosegontar/pinku), a Pinboard-to-buku import utility
+- [buku-dmenu](https://gitlab.com/benoliver999/buku-dmenu), a simple bash dmenu wrapper
+- [poku](https://github.com/shanedabes/poku), sync between Pocket and buku
+- [Ebuku](https://github.com/flexibeast/ebuku), Emacs interface to buku
 
 <a href="http://buku.readthedocs.io/en/stable/?badge=stable"><img src="https://img.shields.io/badge/docs-stable-brightgreen.svg?maxAge=2592000" alt="Stable Docs" /></a>
 
 ### In the Press
 
 - [2daygeek](http://www.2daygeek.com/buku-command-line-bookmark-manager-linux/)
+- [Hacker Milk](https://hackermilk.blogspot.com/2020/01/how-to-manage-your-browsers-bookmarks.html)
 - [It's F.O.S.S.](https://itsfoss.com/buku-command-line-bookmark-manager-linux/)
 - [LinOxide](https://linoxide.com/linux-how-to/buku-browser-bookmarks-linux/)
 - [LinuxUser Magazine 01/2017 Issue](http://www.linux-community.de/LU/2017/01/Das-Beste-aus-zwei-Welten)
 - [Make Tech Easier](https://www.maketecheasier.com/manage-browser-bookmarks-ubuntu-command-line/)
 - [One Thing Well](http://onethingwell.org/post/144952807044/buku)
+- [Open Source For You](https://opensourceforu.com/2018/05/buku-a-bookmark-manager-in-the-command-line/)
 - [ulno.net](https://ulno.net/blog/2017-07-19/of-bookmarks-tags-and-browsers/)

@@ -1,4 +1,143 @@
-Buku 3.4
+Buku v4.3
+2020-01-31
+
+- Project renamed to `buku` (small `b`)
+- Export tags in markdown format as comments
+- Tag support for Org import/export
+- Better Windows 10 support
+- Reverse proxy support for `bukuserver`
+- Config `OPEN_IN_NEW_TAB` for `bukuserver`
+- Documentation updated
+- Fix Firefox default profile detection
+- Fix export to DB failing after search
+- Fix broken prompt colors
+- User agent updated
+
+-------------------------------------------------------------------------------
+
+Buku v4.2.2
+2019-05-02
+
+- Fixes broken prompt due to PR #373
+
+-------------------------------------------------------------------------------
+
+Buku v4.2.1
+2019-04-30
+
+- A fix on top of v4.2 to address a packaging problem
+
+-------------------------------------------------------------------------------
+
+Buku v4.2
+2019-04-30
+
+- Disabled appending tags from page on update
+- Improved Windows color support using colorama (optional dep)
+- New format option to show only title and tag
+- Python 3.4 is EOL, support discontinued
+- Several fixes and code refactor
+
+-------------------------------------------------------------------------------
+
+Buku v4.1
+2019-01-15
+
+What's in?
+- Import firefox-exported json
+- Fix auto-import for firefox
+- Fix write to GNU Screen paste buffer
+- Some CVE fixes
+
+-------------------------------------------------------------------------------
+
+Buku v4.0
+2018-11-01
+
+What's in?
+- Show records in pages with option `-p` (works with `-n`, default 10)
+- Enhanced clipboard support: `xclip`, tmux, GNU Screen, Termux
+- Prompt key `O` works with search results along with GUI browser toggling
+- Search by taglist id with prompt key `g`
+- Multiple fixes
+
+-------------------------------------------------------------------------------
+
+Buku v3.9
+2018-08-30
+
+What's in?
+- Set number of search results per page (default 10)
+- Retrieve description and tags from page, if available
+- Visit cached version on Wayback Machine
+- Export works with all search options now
+- Changed user agent to Firefox on Ubuntu
+- Several dependencies made _required_ for installation
+- bukuserver will use Flask-Admin
+
+-------------------------------------------------------------------------------
+
+Buku v3.8
+2018-05-24
+
+What's in?
+- A self-hosted http server, bukuserver, that exposes core functionality
+    - browsable front-end on a local web host server
+    - flask default cli interface is used instead custom one
+    - handle not only API but also HTML request
+    - statistic page
+    - CRUD on bookmark
+    - replaces the earlier API module
+- Import complete folder hierarchy as tags during auto-import
+- Merge tags on import even if bookmark URL exists
+- Orgfile import/export
+- Show bookmarks to be deleted before deletion
+- Merge tags during import if bookmark exists
+- Escape regex metacharacters in regex input
+
+-------------------------------------------------------------------------------
+
+Buku v3.7
+2018-03-28
+
+What's in?
+- Exclude keywords in search (keyword filtering)
+- Search and filter by tags
+- Order search results by number of keyword matches
+- Copy URL to clipboard
+- Prompt shortcut 'O' to override text browsers
+- New official packagers: Fedora, Gentoo, OpenBSD, openSUSE
+
+-------------------------------------------------------------------------------
+
+Buku v3.6
+2018-01-09
+
+What's in?
+- Skip bookmark addition if edit is aborted
+- Use urllib3 for handling http connections everywhere
+- Fix auto-import on FreeBSD
+- Generate packages for openSUSE Leap 42.3, Fedora 27
+
+-------------------------------------------------------------------------------
+
+Buku v3.5
+2017-11-10
+
+What's in?
+- Buku now has its own user agent
+- Search works with field filters
+- Edit the last record with `-w=-1` (useful when adding bookmark from GUI)a
+- Support for Chromium browser
+- Colors disabled by default on cmd (Windows), option `--colors` has to be used
+- Get default Firefox profile name from profiles.ini
+- Bash scriptlet to autogen records for testing
+- Some optimization in add record and suggest tags
+- A fresh utility Pinku to import Pinboard bookmarks to Buku
+
+-------------------------------------------------------------------------------
+
+Buku v3.4
 2017-09-18
 
 What's in?
@@ -9,7 +148,7 @@ What's in?
 
 -------------------------------------------------------------------------------
 
-Buku 3.3.1
+Buku v3.3.1
 2017-09-11
 
 This is for all purposes the same as v3.3. We had to re-upload a new version to
@@ -19,7 +158,7 @@ The tagline is changed to - `Powerful command-line bookmark manager.`
 
 -------------------------------------------------------------------------------
 
-Buku 3.3
+Buku v3.3
 2017-09-11
 
 What's in?
@@ -34,7 +173,7 @@ What's in?
 
 -------------------------------------------------------------------------------
 
-Buku 3.2
+Buku v3.2
 2017-08-03
 
 What's in?
@@ -44,7 +183,7 @@ What's in?
 
 -------------------------------------------------------------------------------
 
-Buku 3.1
+Buku v3.1
 2017-06-30
 
 What's in?
@@ -56,12 +195,12 @@ What's in?
 
 -------------------------------------------------------------------------------
 
-Buku 3.0
+Buku v3.0
 2017-04-26
 
 What's in?
 - Edit bookmarks in EDITOR at prompt
-- Import folder names as tags from browser html (thanks @mohammadKhalifa)
+- Import folder names as tags from browser HTML (thanks @mohammadKhalifa)
 - Append, overwrite, delete tags at prompt using >>, >, << (familiar, eh? ;))
 - Negative indices with `--print` (like `tail`)
 - Update in EDITOR along with `--immutable`
@@ -78,7 +217,7 @@ What's in?
 
 -------------------------------------------------------------------------------
 
-Buku 2.9
+Buku v2.9
 2017-02-20
 
 Modifications
@@ -94,7 +233,7 @@ Modifications
 
 -------------------------------------------------------------------------------
 
-Buku 2.8
+Buku v2.8
 2017-01-11
 
 Modifications
@@ -112,7 +251,7 @@ Modifications
 
 -------------------------------------------------------------------------------
 
-Buku 2.7
+Buku v2.7
 2016-11-30
 
 Modifications
@@ -127,7 +266,7 @@ Modifications
 - Support environment variable *https_proxy*
 - Support option `--immutable` to pin titles
 - Keyword `immutable` to search (`-S`) pinned titles
-- Show index in Json output
+- Show index in JSON output
 - New key *q* to quit prompt
 - Support deflate compression
 - Add option `--tacit` to reduce verbosity of some operations
@@ -193,7 +332,7 @@ Modifications
 - Use the logging framework for debug info instead of print
 - Fixed an issue with gzip stream decoding
 - Using only relative path to fetch resource on server
-- Fixed auto-completion errors with zsh
+- Fixed auto-completion errors with Zsh
 - A lot of code cleanup and globals removed, additional test cases
 
 -------------------------------------------------------------------------------
@@ -218,7 +357,7 @@ Buku v2.1
 2016-05-28
 
 Modifications
-- Import bookmarks from Firefox, Google Chrome or IE html bookmark exports
+- Import bookmarks from Firefox, Google Chrome or IE HTML bookmark exports
 - Support comments on bookmarks
 - Prettier output using symbols (`>` title, `+` comments, `#` tags)
 - New option (`--st`, `--stag`) to search by tag
@@ -260,7 +399,7 @@ To begin with, 2.0 is a significant release with respect to options. `Buku` now 
 
 -------------------------------------------------------------------------------
 
-Buku 1.9
+Buku v1.9
 2016-04-23
 
 Modifications
@@ -287,7 +426,7 @@ Modifications
 
 -------------------------------------------------------------------------------
 
-Buku 1.8
+Buku v1.8
 2016-03-26
 
 Modifications
@@ -317,7 +456,7 @@ Modifications
 
 -------------------------------------------------------------------------------
 
-Buku 1.7
+Buku v1.7
 2016-03-15
 
 Modifications
@@ -328,7 +467,7 @@ Modifications
 
 -------------------------------------------------------------------------------
 
-Buku 1.6
+Buku v1.6
 2016-01-22
 
 Modifications
@@ -337,7 +476,7 @@ Modifications
 
 -------------------------------------------------------------------------------
 
-Buku 1.5
+Buku v1.5
 2015-12-20
 
 Modifications
@@ -345,7 +484,7 @@ Modifications
 <pre>$ mkdir ~/.cache/buku/
 $ mv ~/.cache/markit/bookmarks.db ~/.cache/buku/bookmarks.db
 $ rm -rf ~/.cache/markit/bookmarks.db</pre>
-- Manual AES256 encryption and decryption support (password protection) implemented. This adds dependency on PyCrypto module. Installation instructions updated in README.
+- Manual AES-256 encryption and decryption support (password protection) implemented. This adds dependency on PyCrypto module. Installation instructions updated in README.
 - Some typos fixed (thanks @GuilhermeHideki)
 
 -------------------------------------------------------------------------------

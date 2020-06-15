@@ -1,6 +1,9 @@
 """test module."""
 from itertools import product
 from unittest import mock
+from urllib.parse import urlparse
+import json
+import logging
 import os
 import signal
 import sys
@@ -47,16 +50,6 @@ def test_is_ignored_mime(url, exp_res):
     assert exp_res == buku.is_ignored_mime(url)
 
 
-def test_get_page_title():
-    """test func."""
-    resp = mock.Mock()
-    parser = mock.Mock()
-    with mock.patch('buku.BukuHTMLParser', return_value=parser):
-        import buku
-        res = buku.get_page_title(resp)
-        assert res == parser.parsed_title
-
-
 def test_gen_headers():
     """test func."""
     import buku
@@ -68,25 +61,17 @@ def test_gen_headers():
         'DNT': '1'
     }
     buku.gen_headers()
-    assert buku.myproxy is None
-    assert buku.myheaders == exp_myheaders
+    assert buku.MYPROXY is None
+    assert buku.MYHEADERS == exp_myheaders
 
 
 @pytest.mark.parametrize('m_myproxy', [None, mock.Mock()])
 def test_get_PoolManager(m_myproxy):
     """test func."""
-    with mock.patch('buku.urllib3') as m_ul3:
+    with mock.patch('buku.urllib3'):
         import buku
         buku.myproxy = m_myproxy
-        res = buku.get_PoolManager()
-        if m_myproxy:
-            m_ul3.ProxyManager.assert_called_once_with(
-                m_myproxy, num_pools=1, headers=buku.myheaders)
-            assert res == m_ul3.ProxyManager.return_value
-        else:
-            m_ul3.PoolManager.assert_called_once_with(
-                num_pools=1, headers=buku.myheaders)
-            assert res == m_ul3.PoolManager.return_value
+        assert buku.get_PoolManager()
 
 
 @pytest.mark.parametrize(
@@ -215,7 +200,7 @@ def test_edit_at_prompt(nav, is_editor_valid_retval, edit_rec_retval):
         # test
         if nav == 'w' and not is_editor_valid_retval:
             return
-        elif nav == 'w':
+        if nav == 'w':
             m_edit_rec.assert_called_once_with(editor, '', None, buku.DELIM, None)
         elif buku.is_int(nav[2:]):
             obj.edit_update_rec.assert_called_once_with(int(nav[2:]))
@@ -283,12 +268,19 @@ def test_is_int(string, exp_res):
 def test_browse(url, opened_url, platform):
     """test func."""
     with mock.patch('buku.webbrowser') as m_webbrowser, \
-            mock.patch('buku.sys') as m_sys:
+            mock.patch('buku.sys') as m_sys, \
+            mock.patch('buku.os'):
         m_sys.platform = platform
+        get_func_retval = mock.Mock()
+        m_webbrowser.get.return_value = get_func_retval
         import buku
         buku.browse.suppress_browser_output = True
+        buku.browse.override_text_browser = False
         buku.browse(url)
-        m_webbrowser.open.assert_called_once_with(opened_url, new=2)
+        if platform == 'win32':
+            m_webbrowser.open.assert_called_once_with(opened_url, new=2)
+        else:
+            get_func_retval.open.assert_called_once_with(opened_url, new=2)
 
 
 @only_python_3_5
@@ -299,24 +291,22 @@ def test_browse(url, opened_url, platform):
 def test_check_upstream_release(status_code, latest_release):
     """test func."""
     resp = mock.Mock()
-    resp.status_code = status_code
-    with mock.patch('buku.requests') as m_requests, \
+    resp.status = status_code
+    m_manager = mock.Mock()
+    m_manager.request.return_value = resp
+    with mock.patch('buku.urllib3') as m_urllib3, \
             mock.patch('buku.print') as m_print:
         import buku
         if latest_release:
             latest_version = 'v{}'.format(buku.__version__)
         else:
             latest_version = 'v0'
-        resp.json.return_value = [{'tag_name': latest_version}]
-        m_requests.get.return_value = resp
+        m_urllib3.PoolManager.return_value = m_manager
+        resp.data.decode.return_value = json.dumps([{'tag_name': latest_version}])
         buku.check_upstream_release()
         if status_code != 200:
             return
-        if latest_release:
-            print_text = 'This is the latest release'
-        else:
-            print_text = 'Latest upstream release is %s' % latest_version
-        m_print.assert_called_once_with(print_text)
+        len(m_print.mock_calls) == 1
 
 
 @pytest.mark.parametrize(
@@ -389,50 +379,41 @@ def test_is_editor_valid(editor, exp_res):
     product(
         [None, 'example.com'],
         [None, '', 'title'],
-        ['', 'tag1,tag2', ',tag1,tag2,'],
-        [None, '', 'description'],
+        [None, '', '-', 'tag1,tag2', ',tag1,tag2,', ',,,,,'],
+        [None, '', '-', 'description'],
     )
 )
 def test_to_temp_file_content(url, title_in, tags_in, desc):
     """test func."""
     import buku
-    res = buku.to_temp_file_content(url, title_in, tags_in, desc)
-    lines = [
-        '# Lines beginning with "#" will be stripped.',
-        '# Add URL in next line (single line).',
-        '# Add TITLE in next line (single line). Leave blank to web fetch, "-" for no title.',
-        '# Add comma-separated TAGS in next line (single line).',
-        '# Add COMMENTS in next line(s).',
-    ]
-    idx_offset = 0
-    # url
-    if url is not None:
-        lines.insert(2, url)
-        idx_offset += 1
+    if desc is None:
+        desc_text = '\n'
+    elif desc == '':
+        desc_text = '-'
+    else:
+        desc_text = desc
     if title_in is None:
-        title_in = ''
+        title_text = ''
     elif title_in == '':
-        title_in = '-'
+        title_text = '-'
     else:
-        pass
-
-    # title
-    lines.insert(idx_offset + 3, title_in)
-    idx_offset += 1
-
-    # tags
-    lines.insert(idx_offset + 4, tags_in.strip(buku.DELIM))
-    idx_offset += 1
-
-    # description
-    if desc is not None and desc != '':
-        pass
-    else:
-        desc = ''
-    lines.insert(idx_offset + 5, desc)
-
-    for idx, res_line in enumerate(res.splitlines()):
-        assert lines[idx] == res_line
+        title_text = title_in
+    if tags_in is None:
+        with pytest.raises(AttributeError):
+            res = buku.to_temp_file_content(url, title_in, tags_in, desc)
+        return
+    res = buku.to_temp_file_content(url, title_in, tags_in, desc)
+    lines = """# Lines beginning with "#" will be stripped.
+# Add URL in next line (single line).{}
+# Add TITLE in next line (single line). Leave blank to web fetch, "-" for no title.{}
+# Add comma-separated TAGS in next line (single line).{}
+# Add COMMENTS in next line(s). Leave blank to web fetch, "-" for no comments.{}""".format(
+        ''.join(['\n', url]) if url is not None else '',
+        ''.join(['\n', title_text]),
+        ''.join(['\n', ','.join([x for x in tags_in.split(',') if x])]) if tags_in else '\n',
+        ''.join(['\n', desc_text])
+    )
+    assert res == lines
 
 
 @pytest.mark.parametrize(
@@ -542,11 +523,38 @@ def test_sigint_handler(capsys):
 @pytest.mark.parametrize(
     'url, exp_res',
     [
-        ['http://example.com.', ('', 0, 1)],
-        ['http://example.com', ('Example Domain', 0, 0)],
-        ['http://example.com/page1.txt', (('', 1, 0))],
-        ['about:new_page', (('', 0, 1))],
-        ['chrome://version/', (('', 0, 1))],
+        ['http://example.com.', (None, None, None, 0, 1)],
+        ['http://example.com', ('Example Domain', None, None, 0, 0)],
+        ['http://example.com/page1.txt', (('', '', '', 1, 0))],
+        ['about:new_page', ((None, None, None, 0, 1))],
+        ['chrome://version/', ((None, None, None, 0, 1))],
+        ['chrome://version/', ((None, None, None, 0, 1))],
+        # [
+        #     'http://4pda.ru/forum/index.php?showtopic=182463&st=1640#entry6044923',
+        #     (
+        #         'Samsung GT-I5800 Galaxy 580 - Обсуждение - 4PDA',
+        #         'Samsung GT-I5800 Galaxy 580 - Обсуждение - 4PDA',
+        #         None,
+        #         0, 0
+        #     )
+        # ],
+        [
+            'https://www.google.ru/search?'
+            'newwindow=1&safe=off&q=xkbcomp+alt+gr&'
+            'oq=xkbcomp+alt+gr&'
+            'gs_l=serp.3..33i21.28976559.28977886.0.'
+            '28978017.6.6.0.0.0.0.167.668.0j5.5.0....0...1c.1.64.'
+            'serp..1.2.311.06cSKPTLo18',
+            ('xkbcomp alt gr', None, None, 0, 0)
+        ],
+        [
+            'http://www.vim.org/scripts/script.php?script_id=4641',
+            (
+                'mlessnau_case - "in-case" selection, deletion and substitution '
+                'for underscore, camel, mixed case : vim online',
+                None, None, 0, 0
+            )
+        ],
     ]
 )
 def test_network_handler_with_url(url, exp_res):
@@ -556,6 +564,10 @@ def test_network_handler_with_url(url, exp_res):
     buku.urllib3 = urllib3
     buku.myproxy = None
     res = buku.network_handler(url)
+    if urlparse(url).netloc == 'www.google.ru':
+        temp_res = [res[0].split(" - ")[0], ]
+        temp_res.extend(res[1:])
+        res = tuple(temp_res)
     assert res == exp_res
 
 
@@ -579,7 +591,7 @@ def test_is_nongeneric_url(url, exp_res):
     'newtag, exp_res',
     [
         (None, ('http://example.com', 'text1', None, None, 0, True)),
-        ('tag1',('http://example.com', 'text1', ',tag1,', None, 0, True)),
+        ('tag1', ('http://example.com', 'text1', ',tag1,', None, 0, True)),
     ]
 )
 def test_import_md(tmpdir, newtag, exp_res):
@@ -587,6 +599,20 @@ def test_import_md(tmpdir, newtag, exp_res):
     p = tmpdir.mkdir("importmd").join("test.md")
     p.write("[text1](http://example.com)")
     res = list(import_md(p.strpath, newtag))
+    assert res[0] == exp_res
+
+@pytest.mark.parametrize(
+    'newtag, exp_res',
+    [
+        (None, ('http://example.com', 'text1', None, None, 0, True)),
+        ('tag0', ('http://example.com', 'text1', ',tag0,tag1,:tag2,tag:3,tag4:,tag::5,tag:6:,', None, 0, True)),
+    ]
+)
+def test_import_org(tmpdir, newtag, exp_res):
+    from buku import import_org
+    p = tmpdir.mkdir("importorg").join("test.org")
+    p.write("[[http://example.com][text1]] :tag1: ::tag2:tag::3:tag4:: :tag:::5:tag::6:: :")
+    res = list(import_org(p.strpath, newtag))
     assert res[0] == exp_res
 
 
@@ -599,7 +625,7 @@ def test_import_md(tmpdir, newtag, exp_res):
 <a> </a>""",
             ((
                 'https://github.com/j', 'GitHub', ',tag1,tag2,',
-                'comment for the bookmark here\n', 0, True
+                'comment for the bookmark here', 0, True, False
             ),)
         ),
         (
@@ -608,7 +634,7 @@ def test_import_md(tmpdir, newtag, exp_res):
             <a>second line of the comment here</a>""",
             ((
                 'https://github.com/j', 'GitHub', ',tag1,tag2,',
-                'comment for the bookmark here\n            ', 0, True
+                'comment for the bookmark here', 0, True, False
             ),)
         ),
         (
@@ -622,10 +648,10 @@ def test_import_md(tmpdir, newtag, exp_res):
                     'https://github.com/j', 'GitHub', ',tag1,tag2,',
                     'comment for the bookmark here\n            '
                     'second line of the comment here\n            '
-                    'third line of the comment here\n            ',
-                    0, True
+                    'third line of the comment here',
+                    0, True, False
                 ),
-                ('https://news.com/', 'News', ',tag1,tag2,tag3,', None, 0, True)
+                ('https://news.com/', 'News', ',tag1,tag2,tag3,', None, 0, True, False)
             )
         ),
         (
@@ -634,7 +660,7 @@ def test_import_md(tmpdir, newtag, exp_res):
             <DD>comment for the bookmark here""",
             ((
                 'https://github.com/j', 'GitHub', ',tag1,tag2,',
-                'comment for the bookmark here', 0, True
+                'comment for the bookmark here', 0, True, False
             ),)
         )
 
@@ -647,7 +673,7 @@ def test_import_html(html_text, exp_res):
     html_soup = BeautifulSoup(html_text, 'html.parser')
     res = list(import_html(html_soup, False, None))
     for item, exp_item in zip(res, exp_res):
-        assert item == exp_item
+        assert item == exp_item, 'Actual item:\n{}'.format(item)
 
 
 def test_import_html_and_add_parent():
@@ -656,7 +682,7 @@ def test_import_html_and_add_parent():
     html_text = """<DT><H3>1s</H3>
 <DL><p>
 <DT><A HREF="http://example.com/"></A>"""
-    exp_res = ('http://example.com/', None, ',1s,', None, 0, True)
+    exp_res = ('http://example.com/', None, ',1s,', None, 0, True, False)
     html_soup = BeautifulSoup(html_text, 'html.parser')
     res = list(import_html(html_soup, True, None))
     assert res[0] == exp_res
@@ -669,8 +695,78 @@ def test_import_html_and_new_tag():
 <DD>comment for the bookmark here"""
     exp_res = (
         'https://github.com/j', 'GitHub', ',tag1,tag2,tag3,',
-        'comment for the bookmark here', 0, True
+        'comment for the bookmark here', 0, True, False
     )
     html_soup = BeautifulSoup(html_text, 'html.parser')
     res = list(import_html(html_soup, False, 'tag3'))
     assert res[0] == exp_res
+
+
+@pytest.mark.parametrize(
+    'platform, params',
+    [
+        ['linux', ['xsel', '-b', '-i']],
+        ['freebsd', ['xsel', '-b', '-i']],
+        ['openbsd', ['xsel', '-b', '-i']],
+        ['darwin', ['pbcopy']],
+        ['win32', ['clip']],
+        ['random', None],
+    ],
+)
+def test_copy_to_clipboard(platform, params):
+    # m_popen = mock.Mock()
+    content = mock.Mock()
+    m_popen_retval = mock.Mock()
+    platform_recognized = \
+        platform.startswith(('linux', 'freebsd', 'openbsd')) \
+        or platform in ('darwin', 'win32')
+    with mock.patch('buku.sys') as m_sys, \
+            mock.patch('buku.Popen', return_value=m_popen_retval) as m_popen, \
+            mock.patch('buku.shutil.which', return_value=True):
+        m_sys.platform = platform
+        from buku import copy_to_clipboard
+        import subprocess
+        copy_to_clipboard(content)
+        if platform_recognized:
+            m_popen.assert_called_once_with(
+                params, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            m_popen_retval.communicate.assert_called_once_with(content)
+        else:
+            logging.info('popen is called {} on unrecognized platform'.format(m_popen.call_count))
+
+
+@pytest.mark.parametrize('export_type, exp_res', [
+    [
+        'html',
+        '<!DOCTYPE NETSCAPE-Bookmark-file-1>\n\n'
+        '<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">\n'
+        '<TITLE>Bookmarks</TITLE>\n<H1>Bookmarks</H1>\n\n<DL><p>\n'
+        '    <DT><H3 ADD_DATE="1556430615" LAST_MODIFIED="1556430615" PERSONAL_TOOLBAR_FOLDER="true">buku bookmarks</H3>\n'
+        '    <DL><p>\n'
+        '        <DT><A HREF="htttp://example.com" ADD_DATE="1556430615" LAST_MODIFIED="1556430615"></A>\n'
+        '        <DT><A HREF="htttp://example.org" ADD_DATE="1556430615" LAST_MODIFIED="1556430615"></A>\n'
+        '        <DT><A HREF="http://google.com" ADD_DATE="1556430615" LAST_MODIFIED="1556430615">Google</A>\n'
+        '    </DL><p>\n</DL><p>'
+    ],
+    ['org', '* [[htttp://example.com][Untitled]]\n* [[htttp://example.org][Untitled]]\n* [[http://google.com][Google]]\n'],
+    ['markdown', '- [Untitled](htttp://example.com)\n- [Untitled](htttp://example.org)\n- [Google](http://google.com)\n'],
+    ['random', None],
+])
+def test_convert_bookmark_set(export_type, exp_res, monkeypatch):
+    from buku import convert_bookmark_set
+    import buku
+    bms = [
+        (1, 'htttp://example.com', '', ',', '', 0),
+        (1, 'htttp://example.org', None, ',', '', 0),
+        (2, 'http://google.com', 'Google', ',', '', 0)]
+    if export_type == 'random':
+        with pytest.raises(AssertionError):
+            convert_bookmark_set(bms, export_type=export_type)
+    else:
+
+        def return_fixed_number():
+            return 1556430615
+        monkeypatch.setattr(buku.time, 'time', return_fixed_number)
+        res = convert_bookmark_set(bms, export_type=export_type)
+        assert res['count'] == 3
+        assert exp_res == res['data']

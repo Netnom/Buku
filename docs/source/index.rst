@@ -1,12 +1,12 @@
-.. Buku documentation master file, created by
+.. buku documentation master file, created by
    sphinx-quickstart on Thu Sep  7 12:54:59 2017.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Buku
+buku
 ====
 
-Powerful command-line bookmark manager. Your mini web!
+Bookmark manager like a text-based mini-web.
 
 .. toctree::
    :maxdepth: 2
@@ -18,7 +18,7 @@ Powerful command-line bookmark manager. Your mini web!
    :maxdepth: 2
    :caption: Documentation
 
-   Buku <buku>
+   buku <buku>
 
 Indices and tables
 ==================
